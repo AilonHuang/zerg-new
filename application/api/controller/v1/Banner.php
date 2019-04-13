@@ -4,6 +4,8 @@
 namespace app\api\controller\v1;
 
 
+use app\api\validate\IDMustBePostiveInt;
+
 class Banner
 {
     /**
@@ -14,6 +16,6 @@ class Banner
      */
     public function getBanner($id)
     {
-
+        (new IDMustBePostiveInt())->goCheck();
     }
 }
