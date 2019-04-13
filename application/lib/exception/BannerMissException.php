@@ -4,10 +4,10 @@
 namespace app\lib\exception;
 
 
-class BannerMissException implements BaseException
+class BannerMissException extends BaseException
 {
-    const code = 404;
-    const msg = '请求的 Banner 不存在';
-    const errorCode = 4000;
+    public $code = 404;
+    public $msg = '请求的 Banner 不存在';
+    public $errorCode = 4000;
 
 }
