@@ -12,6 +12,10 @@
 // [ 应用入口文件 ]
 namespace think;
 
+use think\facade\Log;
+
+define('LOG_PATH', __DIR__ . '/../logs/');
+
 // 加载基础文件
 require __DIR__ . '/../thinkphp/base.php';
 
@@ -19,3 +23,8 @@ require __DIR__ . '/../thinkphp/base.php';
 
 // 执行应用并响应
 Container::get('app')->run()->send();
+
+Log::init([
+    'path' => LOG_PATH,
+    'level' => ['sql', 'error'],
+]);

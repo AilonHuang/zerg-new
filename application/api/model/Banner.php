@@ -2,20 +2,16 @@
 
 namespace app\api\model;
 
-use think\Exception;
+use think\Db;
 use think\Model;
 
 class Banner extends Model
 {
     public static function getBannerByID($id)
     {
-        // TODO 根据 banner id 获取 banner 信息
-        return null;
-        try {
-            1 / 0;
-        } catch (Exception $exception) {
-            throw $exception;
-        }
-        return 'this is banner info';
+        $result = Db::name('banner_item')
+            ->where('banner_id', '=', $id)
+            ->select();
+        return $result;
     }
 }
