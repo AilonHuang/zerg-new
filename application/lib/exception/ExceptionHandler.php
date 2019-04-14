@@ -3,12 +3,14 @@
 namespace app\lib\exception;
 
 use think\exception\Handle;
+use think\facade\Log;
 
 class ExceptionHandler extends Handle
 {
     private $cote;
     private $msg;
     private $errorCode;
+
     // 需要返回客户端当前请求的 URL 路径
 
 
@@ -21,16 +23,29 @@ class ExceptionHandler extends Handle
             $this->errorCode = $exception->errorCode;
         } else {
             $this->cote = 500;
-            $this->msg= '服务器错误，不想告诉你';
+            $this->msg = '服务器错误，不想告诉你';
             $this->errorCode = 999;
+            $this->recordErrorLog($exception);
         }
 
         $result = [
             'msg' => $this->msg,
             'error_code' => $this->errorCode,
-            'request_url' => request()->url()
+            'request_url' => request()->url(),
         ];
 
         return json($result, $this->cote);
+    }
+
+    private function recordErrorLog(\Exception $exception)
+    {
+        Log::init([
+            'type' => 'File',
+            'path' => '../logs/',
+            'level' => ['error'],
+            'close' => false
+        ]);
+        Log::write($exception->getMessage(), 'error');
+        Log::save();
     }
 }
