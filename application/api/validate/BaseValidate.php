@@ -13,7 +13,7 @@ class BaseValidate extends Validate
         // 对参数进行校验
         $params = request()->param();
 
-        $result = $this->check($params);
+        $result = $this->batch()->check($params);
 
         if (!$result) {
             throw new ParameterException([
