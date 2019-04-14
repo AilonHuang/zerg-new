@@ -22,10 +22,14 @@ class ExceptionHandler extends Handle
             $this->msg = $exception->msg;
             $this->errorCode = $exception->errorCode;
         } else {
-            $this->cote = 500;
-            $this->msg = '服务器错误，不想告诉你';
-            $this->errorCode = 999;
-            $this->recordErrorLog($exception);
+            if (config('app.app_debug')) {
+                return parent::render($exception);
+            } else {
+                $this->cote = 500;
+                $this->msg = '服务器错误，不想告诉你';
+                $this->errorCode = 999;
+                $this->recordErrorLog($exception);
+            }
         }
 
         $result = [
@@ -43,7 +47,7 @@ class ExceptionHandler extends Handle
             'type' => 'File',
             'path' => '../logs/',
             'level' => ['error'],
-            'close' => false
+            'close' => false,
         ]);
         Log::write($exception->getMessage(), 'error');
         Log::save();
