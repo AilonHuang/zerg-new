@@ -2,16 +2,17 @@
 
 namespace app\api\model;
 
-use think\Db;
-use think\Model;
-
-class Banner extends Model
+class Banner extends BaseModel
 {
+    protected $hidden = ['update_time', 'delete_time'];
+    public function items()
+    {
+        return $this->hasMany(BannerItem::class, 'banner_id', 'id');
+    }
+    
     public static function getBannerByID($id)
     {
-        $result = Db::name('banner_item')
-            ->where('banner_id', '=', $id)
-            ->select();
-        return $result;
+        $banner = self::with('items.img')->get($id);
+        return $banner;
     }
 }
