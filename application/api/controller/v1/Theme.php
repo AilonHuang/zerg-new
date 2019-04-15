@@ -25,4 +25,9 @@ class Theme extends Controller
         }
         return $result;
     }
+
+    public function getComplexOne($id)
+    {
+        return 'success';
+    }
 }
