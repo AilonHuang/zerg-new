@@ -20,4 +20,11 @@ class Theme extends BaseModel
     {
         return $this->belongsToMany(Product::class, 'theme_product', 'product_id', 'theme_id');
     }
+
+    public static function getThemeWithProducts($id)
+    {
+        $theme = self::with('products,topicImg,headImg')
+            ->find($id);
+        return $theme;
+    }
 }

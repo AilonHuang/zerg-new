@@ -4,6 +4,7 @@ namespace app\api\controller\v1;
 
 use app\api\model\Theme as ThemeModel;
 use app\api\validate\IDCollection;
+use app\api\validate\IDMustBePostiveInt;
 use app\lib\exception\ThemException;
 use think\Controller;
 
@@ -20,14 +21,24 @@ class Theme extends Controller
 
         $result = ThemeModel::with('topicImg,headImg')
             ->select($ids);
-        if(!$result) {
+        if (!$result) {
             throw new ThemException();
         }
         return $result;
     }
 
+    /**
+     * @url /theme/:id
+     * @param $id
+     * @return string
+     */
     public function getComplexOne($id)
     {
-        return 'success';
+        (new IDMustBePostiveInt())->goCheck();
+        $theme = ThemeModel::getThemeWithProducts($id);
+        if (!$theme) {
+            throw new ThemException();
+        }
+        return $theme;
     }
 }
