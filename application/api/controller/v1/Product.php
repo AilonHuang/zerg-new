@@ -13,10 +13,11 @@ class Product extends Controller
     {
         (new Count())->goCheck();
         $products = ProductModel::getMostRecent($count);
-        if (!$products) {
+        if ($products->isEmpty()) {
             throw new ProductException();
         }
 
+        $products->hidden(['summary']);
         return $products;
     }
 }

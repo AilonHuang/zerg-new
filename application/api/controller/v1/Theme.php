@@ -21,7 +21,7 @@ class Theme extends Controller
 
         $result = ThemeModel::with('topicImg,headImg')
             ->select($ids);
-        if (!$result) {
+        if ($result->isEmpty()) {
             throw new ThemException();
         }
         return $result;
