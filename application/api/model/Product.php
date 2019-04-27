@@ -2,6 +2,7 @@
 
 namespace app\api\model;
 
+
 class Product extends BaseModel
 {
     protected $hidden = ['delete_time', 'main_img_id', 'pivot', 'from', 'category_id', 'create_time', 'update_time'];
@@ -9,6 +10,16 @@ class Product extends BaseModel
     public function getMainImgUrlAttr($value, $data)
     {
         return $this->prefixImgUrl($value, $data);
+    }
+
+    public function imgs()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id', 'id');
+    }
+
+    public function properties()
+    {
+        return $this->hasMany(ProductProperty::class, 'product_id', 'id');
     }
 
     public static function getMostRecent($count)
@@ -24,5 +35,12 @@ class Product extends BaseModel
         $products = self::where('category_id', '=', $categoryID)
             ->select();
         return $products;
+    }
+
+    public static function getProductDetail($id)
+    {
+        $product = self::with('imgs,properties')
+            ->find($id);
+        return $product;
     }
 }
