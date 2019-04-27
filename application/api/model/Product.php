@@ -14,7 +14,7 @@ class Product extends BaseModel
 
     public function imgs()
     {
-        return $this->hasMany(ProductImage::class, 'product_id', 'id');
+        return $this->hasMany(ProductImage::class, 'product_id', 'id')->order('order', 'asc');
     }
 
     public function properties()
@@ -39,7 +39,7 @@ class Product extends BaseModel
 
     public static function getProductDetail($id)
     {
-        $product = self::with('imgs,properties')
+        $product = self::with(['imgs.imgUrl', 'properties'])
             ->find($id);
         return $product;
     }
