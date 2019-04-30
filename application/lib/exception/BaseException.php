@@ -11,7 +11,7 @@ class BaseException extends Exception
     /**
      * @var int http 状态码
      */
-    public $coed = 400;
+    public $code = 400;
 
     /**
      * @var string 错误具体信息

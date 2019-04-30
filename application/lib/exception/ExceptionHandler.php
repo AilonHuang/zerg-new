@@ -7,7 +7,7 @@ use think\facade\Log;
 
 class ExceptionHandler extends Handle
 {
-    private $cote;
+    private $code;
     private $msg;
     private $errorCode;
 
@@ -18,7 +18,7 @@ class ExceptionHandler extends Handle
     {
         if ($exception instanceof BaseException) {
             // 如果是自定义的异常
-            $this->cote = $exception->coed;
+            $this->code = $exception->code;
             $this->msg = $exception->msg;
             $this->errorCode = $exception->errorCode;
         } else {
