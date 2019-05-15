@@ -50,7 +50,7 @@ class Token
     // 需要用户和 CMS 管理员都可以访问的权限
     public static function needPrimaryScope()
     {
-        $scope =  self::getCurrentTokenVar('scope');
+        $scope = self::getCurrentTokenVar('scope');
         if (!$scope) {
             throw new TokenException();
         }
@@ -72,6 +72,21 @@ class Token
             return true;
         } else {
             throw new ForbiddenException();
+        }
+    }
+
+    public static function isValidOperate($checkedUID)
+    {
+        if (!$checkedUID) {
+            throw new Exception('检测 UID 时必须传入一个被检测的 UID');
+        }
+
+        $currentOperateUID = self::getCurrentUID();
+
+        if ($checkedUID == $currentOperateUID) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
