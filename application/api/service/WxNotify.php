@@ -7,6 +7,7 @@ use app\api\model\Order as OrderModel;
 use app\api\model\Product;
 use app\api\service\Order as OrderService;
 use app\lib\enum\OrderStatusEnum;
+use think\Db;
 use think\Exception;
 use think\facade\Env;
 use think\facade\Log;
@@ -20,7 +21,7 @@ class WxNotify extends \WxPayNotify
     {
         if ($data['result_code'] == 'SUCCESS') {
             $orderNo = $data['out_trade_no'];
-
+            Db::startTrans();
             try {
                 $order = OrderModel::where('order_no', '=', $orderNo)
                     ->find();
@@ -34,8 +35,10 @@ class WxNotify extends \WxPayNotify
                        $this->updateOrderStatus($order->id, false);
                    }
                 }
+                Db::commit();
                 return true;
             } catch (Exception $exception) {
+                Db::rollback();
                 Log::error($exception);
                 return false;
             }
