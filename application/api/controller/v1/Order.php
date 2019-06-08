@@ -33,9 +33,9 @@ class Order extends BaseController
         $data = $pagingOrders->hidden(['snap_items', 'snap_address', 'prepay_id'])
             ->toArray();
         return [
-            'data' => $data,
-                'current_page' => $pagingOrders->getCurrentPage(),
-            ];
+            'data' => $data['data'],
+            'current_page' => $pagingOrders->getCurrentPage(),
+        ];
 
     }
 
@@ -43,7 +43,7 @@ class Order extends BaseController
     {
         (new IDMustBePostiveInt())->goCheck();
         $orderDetail = OrderModel::get($id);
-        if(!$orderDetail) {
+        if (!$orderDetail) {
             throw new OrderException();
         }
         return $orderDetail->hidden(['prepay_id']);
