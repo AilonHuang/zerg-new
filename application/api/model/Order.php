@@ -8,6 +8,13 @@ class Order extends BaseModel
 
     public $autoWriteTimestamp = true;
 
+    public static function getSummaryByPage($page, $size)
+    {
+        $pagingData = self::order('create_time desc')
+            ->paginate($size, true, ['page' => $page]);
+        return $pagingData ;
+    }
+
     public function getSnapItemsAttr($value)
     {
         if (empty($value)) {
